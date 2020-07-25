@@ -6,10 +6,11 @@ package main
 //hackers who wish to demo their script in front of an audience
 import (
 	"bufio"
+	"fmt"
 	//"io"
 	"os"
-	//"os/Exec"
-	"fmt"
+	"os/exec"
+	"strings"
 	"time"
 )
 
@@ -35,6 +36,7 @@ func main() {
 	defer f.Close() // file will be closed when main function returns
 	var count = 0
 	var lines = len(textlines)
+
 	for _, line := range textlines {
 		if EnabledRealtype {
 			for _, char := range line {
@@ -42,6 +44,15 @@ func main() {
 				time.Sleep(100 * time.Millisecond)
 			}
 		}
+		comastr := strings.Split(line, " ") // extract string from line using space as delimiter
+		comastrlen := len(comastr)
+		//TODO: switch if number of command args is less than 2
+		var commandargs = comastr[1]
+		for i := 2; i < comastrlen; i++ {
+			commandargs = fmt.Sprintf("%s %s", commandargs, comastr[i])
+		}
+		command := exec.Command(comastr[0], commandargs) // form command from strings in line
+
 		if EnabledWaitForConfirm && count < lines-1 {
 			var confirm = ""
 			fmt.Printf("\n continue ? type n to break")
@@ -56,6 +67,12 @@ func main() {
 			}
 		}
 		fmt.Printf("\n")
-		count++ // keeps track of line count
+		command.Stdout = os.Stdout //TODO: take input and output from file
+		command.Stdin = os.Stdin
+		if err := command.Start(); err != nil {
+			fmt.Println(err)
+		}
+		command.Wait() // wait for command to execute
+		count++        // keeps track of line count
 	}
 }

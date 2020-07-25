@@ -1,4 +1,0 @@
-this is a test file
-it is only to show typing
-sometimes commands are given like this
-it is to ensure that it looks like someone is typing them
