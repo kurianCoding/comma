@@ -35,7 +35,7 @@ func main() {
 	}
 	defer f.Close() // file will be closed when main function returns
 	var count = 0
-	var lines = len(textlines)
+	//var lines = len(textlines)
 
 	for _, line := range textlines {
 		if EnabledRealtype {
@@ -46,27 +46,13 @@ func main() {
 		}
 		comastr := strings.Fields(line)                     // extract string from line using space as delimiter
 		command := exec.Command(comastr[0], comastr[1:]...) // form command from strings in line
-
-		if EnabledWaitForConfirm && count < lines-1 {
-			var confirm = ""
-			fmt.Printf("\n continue ? type n to break")
-			fmt.Scanf("%s", confirm)
-			if confirm == "n" {
-				return
-			}
-		} else {
-			if count == lines-1 {
-				command.Stdout = os.Stdout //TODO: take input and output from file
-				command.Stdin = os.Stdin
-				if err := command.Start(); err != nil {
-					fmt.Println(err)
-				}
-				command.Wait() // wait for command to execute
-				fmt.Printf("\n")
-				return
-			}
+		var confirm = ""
+		fmt.Printf("\n continue ? type n to break")
+		fmt.Scanf("%s", &confirm)
+		if confirm == "n" {
+			return
 		}
-		fmt.Printf("\r \n")
+		fmt.Printf("\n")
 		command.Stdout = os.Stdout //TODO: take input and output from file
 		command.Stdin = os.Stdin
 		if err := command.Start(); err != nil {
