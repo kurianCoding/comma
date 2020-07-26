@@ -44,14 +44,15 @@ func main() {
 				time.Sleep(100 * time.Millisecond)
 			}
 		}
-		comastr := strings.Split(line, " ") // extract string from line using space as delimiter
-		comastrlen := len(comastr)
-		//TODO: switch if number of command args is less than 2
-		var commandargs = comastr[1]
-		for i := 2; i < comastrlen; i++ {
-			commandargs = fmt.Sprintf("%s %s", commandargs, comastr[i])
-		}
-		command := exec.Command(comastr[0], commandargs) // form command from strings in line
+		comastr := strings.Fields(line) // extract string from line using space as delimiter
+		//comastrlen := len(comastr)
+		////TODO: switch if number of command args is less than 2
+		//var commandargs = comastr[1]
+		//for i := 2; i < comastrlen; i++ {
+		//commandargs = fmt.Sprintf("%s %s", commandargs, comastr[i])
+		//}
+
+		command := exec.Command(comastr[0], comastr[1:]...) // form command from strings in line
 
 		if EnabledWaitForConfirm && count < lines-1 {
 			var confirm = ""
