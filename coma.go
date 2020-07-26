@@ -56,6 +56,12 @@ func main() {
 			}
 		} else {
 			if count == lines-1 {
+				command.Stdout = os.Stdout //TODO: take input and output from file
+				command.Stdin = os.Stdin
+				if err := command.Start(); err != nil {
+					fmt.Println(err)
+				}
+				command.Wait() // wait for command to execute
 				fmt.Printf("\n")
 				return
 			}
