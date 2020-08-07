@@ -7,6 +7,6 @@ hackers who wish to demo their script in front of an audience
 ```
 mkdir $HOME/bin
 export PATH=$PATH:$HOME/bin
-make
-comma hello.sh
+make build
+make test
 ```
