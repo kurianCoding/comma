@@ -1,3 +1,5 @@
 BIN=$(HOME)/bin
-make:
+test:
+	comma  hello.sh
+build:
 	go build -o $(BIN)/comma

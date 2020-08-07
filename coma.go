@@ -53,12 +53,17 @@ func main() {
 			return
 		}
 		fmt.Printf("\n")
+		timer := time.Now()
 		command.Stdout = os.Stdout //TODO: take input and output from file
 		command.Stdin = os.Stdin
 		if err := command.Start(); err != nil {
 			fmt.Println(err)
 		}
-		command.Wait() // wait for command to execute
-		count++        // keeps track of line count
+		command.Wait()       // wait for command to execute
+		timer2 := time.Now() //finish time
+		elapsed := timer2.Sub(timer)
+		fmt.Printf("\n")
+		fmt.Printf("time to execute:%v\n", elapsed)
+		count++ // keeps track of line count
 	}
 }
