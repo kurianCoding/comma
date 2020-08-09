@@ -7,6 +7,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"strings"
@@ -33,6 +34,12 @@ func main() {
 		textlines = append(textlines, scanner.Text())
 	}
 	defer f.Close() // file will be closed when main function returns
+	chat, err := ChatConnect()
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("connected to chat")
+	defer chat.Close()
 	var count = 0
 	//var lines = len(textlines)
 
@@ -51,9 +58,10 @@ func main() {
 		if confirm == "n" {
 			return
 		}
+		_, _ = chat.Write([]byte(fmt.Sprintf("%s\n", line))) //write the command
 		fmt.Printf("\n")
-		timer := time.Now()
-		command.Stdout = os.Stdout //TODO: take input and output from file
+		timer := time.Now()   // start timer
+		command.Stdout = chat //TODO:make chat optional		//command.Stdout = os.Stdout //TODO: take input and output from file
 		command.Stdin = os.Stdin
 		if err := command.Start(); err != nil {
 			fmt.Println(err)
